@@ -11,6 +11,12 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
+  </head>
+
+  <body ng-app="starter">
+    <ion-nav-view></ion-nav-view>
+
+    <!-- JS -->
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -19,11 +25,10 @@
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
-    <script src="js/app.js"></script>
-    <script src="js/controllers.js"></script>
-  </head>
+    <script src="app/app.js"></script>
 
-  <body ng-app="starter">
-    <ion-nav-view></ion-nav-view>
+    <!-- beers -->
+    <script src="app/beers/beers.module.js"></script>
+    <script src="app/beers/beers.controllers.js"></script>
   </body>
 </html>
