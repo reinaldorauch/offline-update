@@ -10,19 +10,15 @@
   function routes ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('app', {
-        url: '/app',
+        url: '/list',
         views: {
-          '': {
-            templateUrl: 'app/beers/beers.template.html',
-            controller: 'AppCtrl',
-          },
           'menuContent': {
             templateUrl: 'app/beers/beers.list.html'
           }
         }
       })
 
-      .state('app.form', {
+      .state('form', {
         url: '/form',
         views: {
           'menuContent': {
@@ -32,7 +28,7 @@
       });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/app');
+      $urlRouterProvider.otherwise('/list');
 
   }
 })();
