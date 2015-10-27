@@ -1,8 +1,8 @@
 <ion-view view-title="List">
   <ion-content>
     <ul class="list">
-        <li collection-repeat="beer in vm.beers" class="item">
-            {{ beer.name }}
+        <li collection-repeat="beer in beers" class="item">
+            {{ beer.id }} - {{ beer.name }}
         </li>
     </ul>
   </ion-content>

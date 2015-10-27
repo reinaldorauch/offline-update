@@ -43,9 +43,8 @@
     }
 
     function insertBeer (beer) {
-      var q = 'INSERT INTO beers (id, name) VALUE (?, ?)';
+      var q = 'INSERT INTO beers (id, name) VALUES (?, ?)';
       var data = [beer.id, beer.name];
-      console.log(beer, data);
       return $cordovaSQLite.execute(db, q, data);
     }
 

@@ -14,22 +14,30 @@
 
     $scope.beers = [];
 
-    console.log('Loading AppCtrl');
     init();
 
+    $scope.$on('update', function () {
+      list();
+    });
+
     function init () {
-      $ionicLoading.show({ template: 'Loading beers...' });
       $ionicPlatform.ready(function () {
-        dbFactory.loadDb()
-          .then(function () {
-            return dbFactory.getBeers()
-              .then(function (beers) {
-                console.log(beers);
-                $scope.beers = beers;
-                $ionicLoading.hide();
-              });
-          });
+        dbFactory.loadDb().then(list);
       });
+    }
+
+    function list() {
+      $ionicLoading.show({ template: 'Loading beers...' });
+      return dbFactory.getBeers()
+        .then(function (beers) {
+          var list = [];
+          for (var i = 0; i < beers.rows.length; i++) {
+            list.push(beers.rows.item(i));
+          }
+          console.log(list);
+          $scope.beers = list;
+          $ionicLoading.hide();
+        });
     }
   }
 
@@ -39,9 +47,9 @@
 
   beers.controller('FormController', FormController);
 
-  FormController.$inject = ['dbFactory', '$ionicPopup', '$state', '$scope'];
+  FormController.$inject = ['dbFactory', '$ionicPopup', '$state', '$scope', '$rootScope'];
 
-  function FormController (dbFactory, $ionicPopup, $state, $scope) {
+  function FormController (dbFactory, $ionicPopup, $state, $scope, $rootScope) {
 
     $scope.beer = {
       id: '',
@@ -53,7 +61,7 @@
     function saveBeer () {
       dbFactory.insertBeer($scope.beer)
         .then(function(res) {
-            console.log("INSERT ID -> " + res.insertId);
+            $rootScope.$emit('update');
         }, function (err) {
             console.error(err);
         });
