@@ -35,12 +35,8 @@
             </ion-header-bar>
             <ion-content>
               <ion-list>
-                <ion-item menu-close href="#/list">
-                  Beers
-                </ion-item>
-                <ion-item menu-close href="#/form">
-                  Form
-                </ion-item>
+                <ion-item menu-close href="#/list">Beers</ion-item>
+                <ion-item menu-close href="#/form">Form</ion-item>
               </ion-list>
             </ion-content>
           </ion-side-menu>
@@ -52,11 +48,18 @@
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
+    <!-- ngCordova -->
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
     <script src="app/app.js"></script>
+
+    <!-- CORE -->
+    <script src="app/core/core.module.js"></script>
+    <script src="app/core/db.factory.js"></script>
 
     <!-- beers -->
     <script src="app/beers/beers.module.js"></script>

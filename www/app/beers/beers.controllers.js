@@ -2,49 +2,69 @@
   'use strict';
   var beers = angular.module('beers');
 
+  /**
+   * LIST CONTROLLER
+   */
+
   beers.controller('AppCtrl', AppCtrl);
 
-  AppCtrl.$inject = ['$scope', '$ionicModal', '$timeout'];
+  AppCtrl.$inject = ['$ionicLoading', '$ionicPlatform', 'dbFactory', '$scope'];
 
-  function AppCtrl($scope, $ionicModal, $timeout) {
+  function AppCtrl($ionicLoading, $ionicPlatform, dbFactory, $scope) {
 
-    // // With the new view caching in Ionic, Controllers are only called
-    // // when they are recreated or on app start, instead of every page change.
-    // // To listen for when this page is active (for example, to refresh data),
-    // // listen for the $ionicView.enter event:
-    // //$scope.$on('$ionicView.enter', function(e) {
-    // //});
+    $scope.beers = [];
 
-    // // Form data for the login modal
-    // $scope.loginData = {};
+    console.log('Loading AppCtrl');
+    init();
 
-    // // Create the login modal that we will use later
-    // $ionicModal.fromTemplateUrl('templates/login.html', {
-    //   scope: $scope
-    // }).then(function(modal) {
-    //   $scope.modal = modal;
-    // });
+    function init () {
+      $ionicLoading.show({ template: 'Loading beers...' });
+      $ionicPlatform.ready(function () {
+        dbFactory.loadDb()
+          .then(function () {
+            return dbFactory.getBeers()
+              .then(function (beers) {
+                console.log(beers);
+                $scope.beers = beers;
+                $ionicLoading.hide();
+              });
+          });
+      });
+    }
+  }
 
-    // // Triggered in the login modal to close it
-    // $scope.closeLogin = function() {
-    //   $scope.modal.hide();
-    // };
+  /**
+   * FORM CONTROLLER
+   */
 
-    // // Open the login modal
-    // $scope.login = function() {
-    //   $scope.modal.show();
-    // };
+  beers.controller('FormController', FormController);
 
-    // // Perform the login action when the user submits the login form
-    // $scope.doLogin = function() {
-    //   console.log('Doing login', $scope.loginData);
+  FormController.$inject = ['dbFactory', '$ionicPopup', '$state', '$scope'];
 
-    //   // Simulate a login delay. Remove this and replace with your login
-    //   // code if using a login system
-    //   $timeout(function() {
-    //     $scope.closeLogin();
-    //   }, 1000);
-    // };
+  function FormController (dbFactory, $ionicPopup, $state, $scope) {
+
+    $scope.beer = {
+      id: '',
+      name: ''
+    };
+
+    $scope.save = saveBeer;
+
+    function saveBeer () {
+      dbFactory.insertBeer($scope.beer)
+        .then(function(res) {
+            console.log("INSERT ID -> " + res.insertId);
+        }, function (err) {
+            console.error(err);
+        });
+    }
+
+    function handleError(err) {
+      $ionicPopup.alert({
+        title: 'Error on inserting beer on the database',
+        template: err.stack
+      });
+    }
   }
 
 })();

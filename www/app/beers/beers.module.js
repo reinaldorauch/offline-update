@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var beers = angular.module('beers', []);
+  var beers = angular.module('beers', ['core']);
 
   beers.config(routes);
 
@@ -9,11 +9,13 @@
 
   function routes ($stateProvider, $urlRouterProvider) {
     $stateProvider
-      .state('app', {
+      .state('list', {
         url: '/list',
         views: {
           'menuContent': {
-            templateUrl: 'app/beers/beers.list.html'
+            templateUrl: 'app/beers/beers.list.html',
+            controller: 'AppCtrl',
+            controllerAs: 'vm'
           }
         }
       })
@@ -22,7 +24,9 @@
         url: '/form',
         views: {
           'menuContent': {
-            templateUrl: 'app/beers/beers.form.html'
+            templateUrl: 'app/beers/beers.form.html',
+            controller: 'FormController',
+            controllerAs: 'vm'
           }
         }
       });
