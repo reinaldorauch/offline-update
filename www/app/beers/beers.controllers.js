@@ -16,7 +16,8 @@
 
     init();
 
-    $scope.$on('update', function () {
+    $scope.$on('database:update', function () {
+      console.log('Update event');
       list();
     });
 
@@ -27,15 +28,12 @@
     }
 
     function list() {
+      console.log('Listing data');
       $ionicLoading.show({ template: 'Loading beers...' });
       return dbFactory.getBeers()
         .then(function (beers) {
-          var list = [];
-          for (var i = 0; i < beers.rows.length; i++) {
-            list.push(beers.rows.item(i));
-          }
-          console.log(list);
-          $scope.beers = list;
+          console.log(beers);
+          $scope.beers = beers;
           $ionicLoading.hide();
         });
     }
@@ -61,7 +59,7 @@
     function saveBeer () {
       dbFactory.insertBeer($scope.beer)
         .then(function(res) {
-            $rootScope.$emit('update');
+            $rootScope.$emit('database:update');
         }, function (err) {
             console.error(err);
         });

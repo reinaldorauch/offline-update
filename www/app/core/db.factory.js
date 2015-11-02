@@ -8,7 +8,8 @@
   dbFactory.$inject = ['$cordovaSQLite', '$q'];
 
   function dbFactory ($cordovaSQLite, $q) {
-    var db;
+    var inMemory = [];
+    var sqliteDb;
 
     var service = {
       loadDb: openDb,
@@ -24,7 +25,8 @@
       console.log('Opening database');
 
       try {
-        db = db || $cordovaSQLite.openDB('app.db');
+        inMemory = [];
+        sqliteDb = sqliteDb || $cordovaSQLite.openDB('app.db');
       } catch(e) {
         console.error(e.stack);
         throw e;
@@ -35,17 +37,29 @@
         'name VARCHAR(255) NOT NULL' +
       ')';
 
-      return $cordovaSQLite.execute(db, q);
+      return $cordovaSQLite.execute(sqliteDb, q);
     }
 
     function getBeers () {
-      return $cordovaSQLite.execute(db, 'SELECT * FROM beers');
+      return $cordovaSQLite.execute(sqliteDb, 'SELECT * FROM beers')
+        .then(function (res) {
+          inMemory = [];
+          for (var i = 0; i < res.rows.length; i++) {
+            inMemory.push(res.rows.item(i));
+          }
+          return inMemory;
+        });
     }
 
     function insertBeer (beer) {
       var q = 'INSERT INTO beers (id, name) VALUES (?, ?)';
       var data = [beer.id, beer.name];
-      return $cordovaSQLite.execute(db, q, data);
+      return $cordovaSQLite.execute(sqliteDb, q, data)
+        .then(function (res) {
+          var obj = angular.copy(beer);
+          inMemory.push(obj);
+          return obj;
+        });
     }
 
   }
