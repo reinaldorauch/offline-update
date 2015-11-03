@@ -14,19 +14,17 @@
         views: {
           'menuContent': {
             templateUrl: 'app/beers/beers.list.html',
-            controller: 'AppCtrl',
-            controllerAs: 'vm'
+            controller: 'AppCtrl'
           }
         }
       })
 
       .state('form', {
-        url: '/form',
+        url: '/form/:id',
         views: {
           'menuContent': {
             templateUrl: 'app/beers/beers.form.html',
-            controller: 'FormController',
-            controllerAs: 'vm'
+            controller: 'FormController'
           }
         }
       });
