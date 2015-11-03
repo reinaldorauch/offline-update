@@ -9,47 +9,47 @@ App para teste de updates offline
 
 2. Navega até a pasta e digita
 
-```
-npm install
-```
+    ```
+    npm install
+    ```
 
 3. Instala ou atualiza as dependências globais
 
-```
-npm install -g bower cordova ionic
-```
+    ```
+    npm install -g bower cordova ionic
+    ```
 
 4. Instala as dependências do bower
 
-```
-bower install
-```
+    ```
+    bower install
+    ```
 
 5. Instala as dependências do ngCordova
 
-```
-cordova plugin add https://github.com/litehelpers/Cordova-sqlite-storage.git
-```
+    ```
+    cordova plugin add https://github.com/litehelpers/Cordova-sqlite-storage.git
+    ```
 
-Se não estiver instalado o android studio, instale.
+5. Se não estiver instalado o android studio, instale.
 
-Certifique-se que as variáveis de ambiente JAVA_HOME e ANDROID_HOME estejam
-configuradas corretamente.
+    Certifique-se que as variáveis de ambiente JAVA_HOME e ANDROID_HOME estejam
+    configuradas corretamente.
 
-Se já estiver instalado o android studio, roda:
+6. Se já estiver instalado o android studio, roda:
 
-```
-ionic platform add android
-```
+    ```
+    ionic platform add android
+    ```
 
-Para buildar o projeto:
+7. Para buildar o projeto:
 
-```
-ionic build
-```
+    ```
+    ionic build
+    ```
 
-Para rodar o projeto no device conectado
+8. Para rodar o projeto no device conectado
 
-```
-ionic run --device
-```
+    ```
+    ionic run --device
+    ```
