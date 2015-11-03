@@ -14,7 +14,10 @@
     var service = {
       loadDb: openDb,
       getBeers: getBeers,
-      insertBeer: insertBeer
+      getBeer: getBeer,
+      updateBeer: updateBeer,
+      insertBeer: insertBeer,
+      removeBeer: removeBeer
     };
 
     return service;
@@ -54,6 +57,19 @@
         });
     }
 
+    function getBeer (id) {
+      return $q(function (res) {
+        for (var i = 0; i < inMemory.length; i++) {
+          if(inMemory[i].id === id) {
+            return res(inMemory[i]);
+          }
+        }
+
+        var q = 'SELECT * FROM people WHERE id = ?';
+        return $cordovaSQLite.execute(sqliteDb, q, [id]);
+      });
+    }
+
     function insertBeer (people) {
       people.upd = new Date();
       var q = 'INSERT INTO people (id, name, email, city, upd) VALUES (?, ?, ?, ?, ?)';
@@ -63,6 +79,33 @@
           var obj = angular.copy(people);
           inMemory.push(obj);
           return obj;
+        });
+    }
+
+    function updateBeer (people) {
+      people.upd = new Date();
+      var q = 'UPDATE people SET name = ?, email = ?, city = ?, upd = ? WHERE id = ?';
+      var data = [people.name, people.email, people.city, people.upd.toISOString(), people.id];
+      return $cordovaSQLite.execute(sqliteDb, q, data)
+        .then(function () {
+          for(var i = 0; i < inMemory.length; i++) {
+            if(inMemory[i].id === people.id) {
+              inMemory[i] = people;
+            }
+          }
+        });
+    }
+
+    function removeBeer (id) {
+      var q = 'DELETE FROM people WHERE id = ?';
+      var data = [id];
+      return $cordovaSQLite.execute(sqliteDb, q, data)
+        .then(function () {
+          for (var i = 0; i < inMemory.length; i++) {
+            if(inMemory[i].id === id) {
+              inMemory.splice(i, 1);
+            }
+          };
         });
     }
 
