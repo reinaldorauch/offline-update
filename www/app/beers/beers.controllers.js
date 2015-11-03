@@ -49,10 +49,7 @@
 
   function FormController (dbFactory, $ionicPopup, $state, $scope, $rootScope) {
 
-    $scope.beer = {
-      id: '',
-      name: ''
-    };
+    $scope.beer = { id: '', name: '', email: '', city: '' };
 
     $scope.save = saveBeer;
 
@@ -60,6 +57,7 @@
       dbFactory.insertBeer($scope.beer)
         .then(function(res) {
             $rootScope.$emit('database:update');
+            $scope.beer = { id: '', name: '', email: '', city: '' };
         }, function (err) {
             console.error(err);
         });

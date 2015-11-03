@@ -32,16 +32,19 @@
         throw e;
       }
 
-      var q = 'CREATE TABLE IF NOT EXISTS beers (' +
+      var q = 'CREATE TABLE IF NOT EXISTS people (' +
         'id VARCHAR(255) PRIMARY KEY, ' +
-        'name VARCHAR(255) NOT NULL' +
+        'name VARCHAR(255) NOT NULL, ' +
+        'email VARCHAR(255) NOT NULL, ' +
+        'city VARCHAR(255) NOT NULL, ' +
+        'upd VARCHAR(25) NOT NULL' +
       ')';
 
       return $cordovaSQLite.execute(sqliteDb, q);
     }
 
     function getBeers () {
-      return $cordovaSQLite.execute(sqliteDb, 'SELECT * FROM beers')
+      return $cordovaSQLite.execute(sqliteDb, 'SELECT * FROM people')
         .then(function (res) {
           inMemory = [];
           for (var i = 0; i < res.rows.length; i++) {
@@ -51,12 +54,13 @@
         });
     }
 
-    function insertBeer (beer) {
-      var q = 'INSERT INTO beers (id, name) VALUES (?, ?)';
-      var data = [beer.id, beer.name];
+    function insertBeer (people) {
+      people.upd = new Date();
+      var q = 'INSERT INTO people (id, name, email, city, upd) VALUES (?, ?, ?, ?, ?)';
+      var data = [people.id, people.name, people.email, people.city, people.upd.toISOString()];
       return $cordovaSQLite.execute(sqliteDb, q, data)
         .then(function (res) {
-          var obj = angular.copy(beer);
+          var obj = angular.copy(people);
           inMemory.push(obj);
           return obj;
         });
